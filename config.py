@@ -88,3 +88,5 @@ for metalabel in METALABELS:
 EPOCH = 2 #seconds
 EPOCH_OVERHANG_TOLERANCE = 0.2
 EPOCH_NAN_TOLERANCE = 0.2
+
+# TODO: add ML related terms
