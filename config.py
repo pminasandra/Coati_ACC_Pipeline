@@ -26,8 +26,8 @@ if eth_tgt[-4:] == ".tsv":
 elif eth_tgt[-4:] == ".csv":
     delimiter = ","
 else:
-    delimiter = input(f"""config.py: could not determine delimiter from {os.path.basename(eth_tgt)}.\n
-                        It's usually ',' or '\\t' or something like that.\n
+    delimiter = input(f"""{os.path.basename(__file__)}: could not determine delimiter from {os.path.basename(eth_tgt)}.
+                        It's usually ',' or '\\t' or something like that.
                         Enter it here (without quotation marks):""")
 
 ETHOGRAM = list(pd.read_csv(eth_tgt, sep=delimiter)['Behavior code'])
@@ -73,14 +73,18 @@ METALABELS = [
 
 ### Validating state/event/meta classifications
 for label in ETHOGRAM:
-    assert (label in STATES) or (label in EVENTS) or (label in METALABELS)
+    assert (label in STATES) or (label in EVENTS) or (label in METALABELS), f"{label} not in STATES, EVENTS, or METALABELS"
 
 for state in STATES:
-    assert state in ETHOGRAM
+    assert state in ETHOGRAM, f"{state} not in ETHOGRAM"
 
 for event in EVENTS:
-    assert event in ETHOGRAM
+    assert event in ETHOGRAM, f"{event} not in ETHOGRAM"
 
 for metalabel in METALABELS:
-    assert metalabel in ETHOGRAM
+    assert metalabel in ETHOGRAM, f"{metalabel} not in ETHOGRAM"
 
+### Feature extraction and audit reading
+EPOCH = 2 #seconds
+EPOCH_OVERHANG_TOLERANCE = 0.2
+EPOCH_NAN_TOLERANCE = 0.2
