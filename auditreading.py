@@ -56,11 +56,51 @@ def read_audit(auditfile):
         df_timestamp = dt.datetime.fromisoformat(df_timestamp[len('gps time: '):])
     df_timestamp_loc = df_relevant.loc[df_relevant['Behavior'] == 'time']['Start (s)'].item()
 
-    print(f"This means that the video started at {df_timestamp - dt.timedelta(seconds=df_timestamp_loc)}")
-    df_start_time = df.timestamp - dt.timedelta(seconds = df_timestamp_loc)
+    df_start_time = df_timestamp - dt.timedelta(seconds = df_timestamp_loc)
 
+    starts_and_stops = list(zip(list(df_relevant['Start (s)']), list(df_relevant['Stop (s)']))) #Start and stop times in seconds, in a list of tuples
+    behaviours = list(df_relevant['Behavior'])
     times_and_labels = []
+    proc_time = df_start_time + dt.timedelta(seconds = starts_and_stops[0][0])
+    proc_time = proc_time - dt.timedelta(microseconds = proc_time.microsecond)  #First second before data available
+    proc_state = behaviours[0]
 
-    # TODO: Write out this part neatly, for every 'floor-operated' EPOCH, a label should be assigned while taking care of OVERHANG_TOLERANCE.
+    first_iter = True
+    bout_count = 0
+    df_stop_time = df_start_time + dt.timedelta(starts_and_stops[-1][1])
 
-read_audit(config.DATA_DIR + "trial1.tsv")
+    while proc_time < df_stop_time and bout_count < len(behaviours):
+        bout_count_correction = 0
+        if first_iter:
+            if (starts_and_stops[0][0] % 1)/config.EPOCH > 1 - config.EPOCH_OVERHANG_TOLERANCE:
+                proc_time += dt.timedelta(seconds = config.EPOCH)
+                continue
+            else:
+                pass
+            first_iter = False
+
+        proc_state = behaviours[bout_count]
+        if proc_state not in config.STATES:
+            if config.IGNORE_EVENTS_IN_AUDITS:
+                bout_count += 1
+                continue
+            else: #THIS THING IS NOT WORKING #FIXME
+                bout_count_correction += 1
+
+        while (df_start_time + dt.timedelta(seconds = starts_and_stops[bout_count][1]) - proc_time).total_seconds() >= config.EPOCH:
+            times_and_labels.append([proc_time, proc_state])
+            proc_time += dt.timedelta(seconds = config.EPOCH)
+
+        if ((df_start_time + dt.timedelta(seconds = starts_and_stops[bout_count][1]) - proc_time)/config.EPOCH).total_seconds() > 1 - config.EPOCH_OVERHANG_TOLERANCE:
+            times_and_labels.append([proc_time, proc_state])
+
+        proc_time += dt.timedelta(seconds = config.EPOCH)
+        bout_count += bout_count_correction + 1
+
+    return pd.DataFrame(times_and_labels, columns=("time", "state"))
+
+if __name__ == "__main__":
+    print("Will now demonstrate read_audit on Data/trial1.csv")
+    print(read_audit(config.DATA_DIR + "trial1.tsv"), '\n')
+    print("Will now demonstrate read_audit on Data/trial2.csv")
+    print(read_audit(config.DATA_DIR + "trial2.tsv"))

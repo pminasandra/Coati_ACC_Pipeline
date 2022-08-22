@@ -44,6 +44,7 @@ STATES = [
     'run',
     'standup',
     'lie',
+    'sniff',
     'chew stand',
     'chew headup'
 ]
@@ -52,7 +53,6 @@ EVENTS = [
     'drink',
     'self groom',
     'groom',
-    'sniff',
     'agg to',
     'spin',
     'agg from',
@@ -89,4 +89,5 @@ EPOCH = 2 #seconds
 EPOCH_OVERHANG_TOLERANCE = 0.2
 EPOCH_NAN_TOLERANCE = 0.2
 
+IGNORE_EVENTS_IN_AUDITS = True
 # TODO: add ML related terms
