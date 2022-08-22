@@ -5,6 +5,7 @@
 import datetime as dt
 import logging
 import os.path
+import warnings
 
 import pandas as pd
 
@@ -45,11 +46,36 @@ def read_audit(auditfile):
 
     if len(df_timestamp) > 1:
         # TODO: Handle multiple time-stamps
-        raise ValueError("Multiple timestamps encountered. Handling this has not yet been implemented.")
+        if not config.MULTIPLE_STARTS_ALLOWED:
+            raise ValueError("Multiple timestamps encountered, but not allowed. To allow, set the MULTIPLE_STARTS_ALLOWED variable to True in config.py.")
+        else:
+            if config.MULTIPLE_STARTS_WARNING:
+                warnings.warn("{os.path.basename(__file__)}: multiple starts encountered. To supress this warning, set MULTIPLE_STARTS_WARNING to False in config.py.")
+            else:
+                multiple_timestamps = True
+                df_timestamp_list = list(df_relevant.loc[df_relevant['Behavior'] == 'time']['Comment start'])
+                df_timestamp_loc_list = list(df_relevant.loc[df_relevant['Behavior'] == 'time']['Start (s)'])
 
     else:
         df_timestamp = df_timestamp.item()
 
+    if multiple_timestamps;
+        df_start_times = []
+        for i in range(df_timestamp_list):
+            timestamp = df_timestamp_list[i]
+            loc = df_timestamp_loc_list[i]
+            if not timestamp.startswith('gps time: '):
+                raise ValueError("Was expecting timestamp comment to start with 'gps time: '")
+            else:
+                timestamp = dt.datetime.fromisoformat(timestamp[len('gps time: '):])
+                df_start_times.append(timestamp - dt.timedelta(seconds = loc))
+
+                st1 = df_start_times[0]
+                st_rest = df_start_times[1:]
+                avg_sec = st1
+                for time in st_rest:
+                    avg_sec += (st1 - time).total_seconds()/len(df_start_times)
+                df_start_time = st1 + avg_sec # Average of all start-times guessed from the multiple time-stamps available in the audit.
     if not df_timestamp.startswith('gps time: '):
         raise ValueError("Was expecting timestamp comment to start with 'gps time: '")
     else:
