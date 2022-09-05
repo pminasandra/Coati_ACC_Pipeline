@@ -43,6 +43,9 @@ def read_audit(auditfile):
     # TODO: sanitisation and validation
 
     df_timestamp = df_relevant.loc[df_relevant['Behavior'] == 'time']['Comment start']
+    multiple_timestamps = False
+    if len(df_timestamp) > 1:
+        multiple_timestamps = True
 
     if len(df_timestamp) > 1:
         # TODO: Handle multiple time-stamps
@@ -59,7 +62,7 @@ def read_audit(auditfile):
     else:
         df_timestamp = df_timestamp.item()
 
-    if multiple_timestamps;
+    if multiple_timestamps:
         df_start_times = []
         for i in range(df_timestamp_list):
             timestamp = df_timestamp_list[i]

@@ -85,7 +85,7 @@ for metalabel in METALABELS:
     assert metalabel in ETHOGRAM, f"{metalabel} not in ETHOGRAM"
 
 ### Feature extraction and audit reading
-EPOCH = 2 #seconds
+EPOCH = 1.0 #seconds
 EPOCH_OVERHANG_TOLERANCE = 0.2
 EPOCH_NAN_TOLERANCE = 0.2
 
