@@ -46,6 +46,7 @@ def read_audit(auditfile):
     multiple_timestamps = False
     if len(df_timestamp) > 1:
         multiple_timestamps = True
+        df_timestamp_list = []
 
     if len(df_timestamp) > 1:
         # TODO: Handle multiple time-stamps
@@ -54,21 +55,20 @@ def read_audit(auditfile):
         else:
             if config.MULTIPLE_STARTS_WARNING:
                 warnings.warn("{os.path.basename(__file__)}: multiple starts encountered. To supress this warning, set MULTIPLE_STARTS_WARNING to False in config.py.")
-            else:
-                multiple_timestamps = True
-                df_timestamp_list = list(df_relevant.loc[df_relevant['Behavior'] == 'time']['Comment start'])
-                df_timestamp_loc_list = list(df_relevant.loc[df_relevant['Behavior'] == 'time']['Start (s)'])
+            multiple_timestamps = True
+            df_timestamp_list = list(df_relevant.loc[df_relevant['Behavior'] == 'time']['Comment start'])
+            df_timestamp_loc_list = list(df_relevant.loc[df_relevant['Behavior'] == 'time']['Start (s)'])
 
     else:
         df_timestamp = df_timestamp.item()
 
     if multiple_timestamps:
         df_start_times = []
-        for i in range(df_timestamp_list):
+        for i in range(len(df_timestamp_list)):
             timestamp = df_timestamp_list[i]
             loc = df_timestamp_loc_list[i]
             if not timestamp.startswith('gps time: '):
-                raise ValueError("Was expecting timestamp comment to start with 'gps time: '")
+                raise ValueError(f"In {os.path.basename(auditfile)}- was expecting timestamp comment to start with 'gps time: '")
             else:
                 timestamp = dt.datetime.fromisoformat(timestamp[len('gps time: '):])
                 df_start_times.append(timestamp - dt.timedelta(seconds = loc))
@@ -77,15 +77,16 @@ def read_audit(auditfile):
                 st_rest = df_start_times[1:]
                 avg_sec = st1
                 for time in st_rest:
-                    avg_sec += (st1 - time).total_seconds()/len(df_start_times)
-                df_start_time = st1 + avg_sec # Average of all start-times guessed from the multiple time-stamps available in the audit.
-    if not df_timestamp.startswith('gps time: '):
-        raise ValueError("Was expecting timestamp comment to start with 'gps time: '")
+                    avg_sec += dt.timedelta(seconds = (st1 - time).total_seconds()/len(df_start_times))
+                df_start_time = avg_sec # Average of all start-times guessed from the multiple time-stamps available in the audit.
     else:
-        df_timestamp = dt.datetime.fromisoformat(df_timestamp[len('gps time: '):])
-    df_timestamp_loc = df_relevant.loc[df_relevant['Behavior'] == 'time']['Start (s)'].item()
+        if not df_timestamp.startswith('gps time: '):
+            raise ValueError("Was expecting timestamp comment to start with 'gps time: '")
+        else:
+            df_timestamp = dt.datetime.fromisoformat(df_timestamp[len('gps time: '):])
+        df_timestamp_loc = df_relevant.loc[df_relevant['Behavior'] == 'time']['Start (s)'].item()
 
-    df_start_time = df_timestamp - dt.timedelta(seconds = df_timestamp_loc)
+        df_start_time = df_timestamp - dt.timedelta(seconds = df_timestamp_loc)
 
     starts_and_stops = list(zip(list(df_relevant['Start (s)']), list(df_relevant['Stop (s)']))) #Start and stop times in seconds, in a list of tuples
     behaviours = list(df_relevant['Behavior'])
@@ -96,17 +97,17 @@ def read_audit(auditfile):
 
     first_iter = True
     bout_count = 0
-    df_stop_time = df_start_time + dt.timedelta(starts_and_stops[-1][1])
+    df_stop_time = df_start_time + dt.timedelta(seconds = starts_and_stops[-1][1])
 
     while proc_time < df_stop_time and bout_count < len(behaviours):
         bout_count_correction = 0
         if first_iter:
+            first_iter = False
             if (starts_and_stops[0][0] % 1)/config.EPOCH > 1 - config.EPOCH_OVERHANG_TOLERANCE:
                 proc_time += dt.timedelta(seconds = config.EPOCH)
                 continue
             else:
                 pass
-            first_iter = False
 
         proc_state = behaviours[bout_count]
         if proc_state not in config.STATES:

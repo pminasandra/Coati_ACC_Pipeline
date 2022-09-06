@@ -43,26 +43,29 @@ STATES = [
     'lope',
     'run',
     'standup',
+    'lick',
     'lie',
+    'backleg scratch',
+    'scratch stomach',
+    'neck scratch',
+    'agg to',
+    'drink',
+    'groom',
+    'self groom',
+    'urinate',
     'sniff',
     'chew stand',
     'chew headup'
 ]
 
 EVENTS = [
-    'drink',
-    'self groom',
-    'groom',
-    'agg to',
     'spin',
-    'agg from',
-    'lick',
     'headup',
     'call',
+    'sneeze',
+    'agg from',
     'bounce',
     'headbop',
-    'backleg scratch',
-    'scratch stomach',
     'head shake'
 ]
 
@@ -92,6 +95,6 @@ EPOCH_NAN_TOLERANCE = 0.2
 IGNORE_EVENTS_IN_AUDITS = True
 
 MULTIPLE_STARTS_ALLOWED = True
-MULTIPLE_STARTS_WARNING = True
+MULTIPLE_STARTS_WARNING = False
 
 # TODO: add ML related terms
