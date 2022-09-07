@@ -38,7 +38,8 @@ def read_acc_file(filename):
     return df
 
 
-df = read_acc_file(f'{config.DATA_DIR}acc/tag9385_acc.txt')
-df_norm_vec = (((df['x']/1000)**2 + (df['y']/1000)**2 + (df['z']/1000)**2)**0.5).to_numpy()
-plt.plot(df['datetime'], df_norm_vec)
-plt.show()
+if __name__ == "__main__":
+    df = read_acc_file(f'{config.DATA_DIR}acc/tag9385_acc.txt')
+    df_norm_vec = (((df['x']/1000)**2 + (df['y']/1000)**2 + (df['z']/1000)**2)**0.5).to_numpy()
+    plt.plot(df['datetime'], df_norm_vec)
+    plt.show()

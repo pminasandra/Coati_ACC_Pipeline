@@ -3,7 +3,10 @@
 # August 19, 2022
 
 import datetime as dt
+import glob
 import logging
+import multiprocessing as mp
+import os
 import os.path
 import warnings
 
@@ -129,8 +132,14 @@ def read_audit(auditfile):
 
     return pd.DataFrame(times_and_labels, columns=("time", "state"))
 
+def read_all_audits():
+
+    tsvfiles = glob.glob(f"{config.DATA_DIR}audits/*.tsv")
+
+    list_of_audits = []
+    for tsvf in tsvfiles:
+        list_of_audits.append(read_audit(tsvf))
+
+    return list_of_audits
 if __name__ == "__main__":
-    print("Will now demonstrate read_audit on Data/trial1.csv")
-    print(read_audit(config.DATA_DIR + "trial1.tsv"), '\n')
-    print("Will now demonstrate read_audit on Data/trial2.csv")
-    print(read_audit(config.DATA_DIR + "trial2.tsv"))
+    pass
