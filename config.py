@@ -97,4 +97,10 @@ IGNORE_EVENTS_IN_AUDITS = True
 MULTIPLE_STARTS_ALLOWED = True
 MULTIPLE_STARTS_WARNING = False
 
+# IMAGE SAVING
+formats = ['pdf', 'png', 'svg']
+def saveimg(img_obj, name):
+    for form in formats:
+        img_obj.savefig(f"{FIGURES_DIR}{form}/{name}.{form}")
+
 # TODO: add ML related terms
