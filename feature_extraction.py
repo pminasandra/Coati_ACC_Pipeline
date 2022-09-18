@@ -10,6 +10,7 @@ import accreading
 import config
 
 FEATURES_TO_USE = []
+FOURIER_FEATURES_TO_USE = []
 
 def _round_to_nearest_second(datetime_obj):
     if datetime_obj.microsecond <= config.EPOCH_OVERHANG_TOLERANCE*1e6:
@@ -26,7 +27,26 @@ def feature(feature_func):
     FEATURES_TO_USE.append(feature_func)
     return feature_func
 
-def process_file(filename):
+def fourier_feature(feature_func):
+    """
+    --> DECORATOR <--
+    Use this to decorate feature functions on frequency domain data
+    """
+    global FOURIER_FEATURES_TO_USE
+    FOURIER_FEATURES_TO_USE.append(feature_func)
+    return feature_func
+
+def data_from(filename):
+    """
+    --> GENERATOR <--
+    Retrieve data from filename as an iterable
+    Args:
+        filename (str): path to file to work with
+    Yields:
+        2-tuple with datetime and np table for all data
+    Raises:
+        None so far
+    """
     acc_df = accreading.read_acc_file(filename)
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
@@ -38,10 +58,8 @@ def process_file(filename):
     while curr_time < datetime_max:
         np_tab = acc_df[(curr_time <= acc_df['datetime']) & (acc_df['datetime'] < curr_time + dt.timedelta(seconds = config.EPOCH))][['x','y','z']].to_numpy()
         if len(np_tab != 0):
-            print(curr_time, "\n", np_tab, "\n\n", flush=True)
+            yield (curr_time, np_tab)
         curr_time += dt.timedelta(seconds = config.EPOCH)
-
-process_file(f"{config.DATA_DIR}acc/tag9478_acc.txt")
 
 def extract_all_features():
     """
