@@ -6,6 +6,9 @@ import os.path
 
 import pandas as pd
 
+### SOME CONSTANTS
+ACC_FREQ = 20
+
 ### Setting up directories
 PROJECTROOT = "/media/pranav/Data1/Personal/Projects/Coati_ACC_Pipeline_2022/"
 FIGURES_DIR = os.path.join(PROJECTROOT, "Figures/")

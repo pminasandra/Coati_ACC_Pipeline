@@ -23,7 +23,8 @@ def read_acc_file(filename):
         None so far
     """
 
-    df = pd.read_csv(filename, sep=',', names=['datetime.date', 'datetime.weekday', 'datetime.time', 'x', 'y', 'z'])
+    df = pd.read_csv(filename, sep=',', names=['acc_type', 'some_number', 'datetime.date', 'datetime.weekday', 'datetime.time', 'x', 'y', 'z'])
+    df = df[['acc_type', 'datetime.date', 'datetime.weekday', 'datetime.time', 'x', 'y', 'z']]
     df['datetime.weekday'] = df['datetime.weekday'].str.replace('So', 'Sun')
     df['datetime.weekday'] = df['datetime.weekday'].str.replace('Mo', 'Mon')
     df['datetime.weekday'] = df['datetime.weekday'].str.replace('Tu', 'Tue')
@@ -32,7 +33,7 @@ def read_acc_file(filename):
     df['datetime.weekday'] = df['datetime.weekday'].str.replace('Fr', 'Fri')
     df['datetime.weekday'] = df['datetime.weekday'].str.replace('Sa', 'Sat')
     df['datetime'] = df['datetime.date'] + " " + df['datetime.weekday'] + " " + df['datetime.time']
-    df = df[['datetime', 'x', 'y', 'z']]
+    df = df[['acc_type', 'datetime', 'x', 'y', 'z']]
     df['datetime'] = pd.to_datetime(df['datetime'], format='%d.%m.%Y %a %H:%M:%S.%f')
 
     return df
