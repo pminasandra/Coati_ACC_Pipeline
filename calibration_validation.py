@@ -17,6 +17,7 @@ import scipy.fft
 import accreading
 import config
 import feature_extraction
+import utilities
 
 def scatterplots_of_acc_axes():
     """
@@ -36,7 +37,7 @@ def scatterplots_of_acc_axes():
         axs[count].set_title(f"{os.path.basename(File)[:-4]}")
         count += 1
 
-    config.saveimg(fig, "acc_3d_scatterplot")
+    utilities.saveimg(fig, "acc_3d_scatterplot")
 
 def fourier_plots():
     """
@@ -77,9 +78,9 @@ def fourier_plots():
             axs[2].cla()
 
         count += 1
-        config.saveimg(fig, "fft_avg")
+        utilities.saveimg(fig, "fft_avg")
 
-    config.saveimg(fig, "fft_avg")
+    utilities.saveimg(fig, "fft_avg")
 
 #scatterplots_of_acc_axes()
 fourier_plots()

@@ -73,7 +73,7 @@ def read_audit(auditfile):
             if not timestamp.startswith('gps time: '):
                 raise ValueError(f"In {os.path.basename(auditfile)}- was expecting timestamp comment to start with 'gps time: '")
             else:
-                timestamp = dt.datetime.fromisoformat(timestamp[len('gps time: '):])
+                timestamp = dt.datetime.fromisoformat(timestamp[len('gps time: '):]) - dt.timedelta(hours=config.TIMEZONE_OFFSET)
                 df_start_times.append(timestamp - dt.timedelta(seconds = loc))
 
                 st1 = df_start_times[0]
@@ -86,7 +86,7 @@ def read_audit(auditfile):
         if not df_timestamp.startswith('gps time: '):
             raise ValueError("Was expecting timestamp comment to start with 'gps time: '")
         else:
-            df_timestamp = dt.datetime.fromisoformat(df_timestamp[len('gps time: '):])
+            df_timestamp = dt.datetime.fromisoformat(df_timestamp[len('gps time: '):]) - dt.timedelta(hours=config.TIMEZONE_OFFSET)
         df_timestamp_loc = df_relevant.loc[df_relevant['Behavior'] == 'time']['Start (s)'].item()
 
         df_start_time = df_timestamp - dt.timedelta(seconds = df_timestamp_loc)
@@ -130,7 +130,7 @@ def read_audit(auditfile):
         proc_time += dt.timedelta(seconds = config.EPOCH)
         bout_count += bout_count_correction + 1
 
-    return pd.DataFrame(times_and_labels, columns=("time", "state"))
+    return pd.DataFrame(times_and_labels, columns=("datetime", "state"))
 
 def read_all_audits():
 

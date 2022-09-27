@@ -100,10 +100,7 @@ IGNORE_EVENTS_IN_AUDITS = True
 MULTIPLE_STARTS_ALLOWED = True
 MULTIPLE_STARTS_WARNING = False
 
-# IMAGE SAVING
-formats = ['pdf', 'png', 'svg']
-def saveimg(img_obj, name):
-    for form in formats:
-        img_obj.savefig(f"{FIGURES_DIR}{form}/{name}.{form}")
+### LOCAL TIME AND OTHER VARIABLES
+TIMEZONE_OFFSET = -5 #hours
 
 # TODO: add ML related terms

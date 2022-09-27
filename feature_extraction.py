@@ -156,6 +156,7 @@ def _extract_all_features_from(File, header="choose"):
     """
 
     assert len(FEATURES_TO_USE) + len(FOURIER_FEATURES_TO_USE) > 0, "there are no features defined"
+    print(f"{os.path.basename(__file__):} feature extraction started from {os.path.basename(File)}")
  
     feature_buffer = []
     with open(f"{config.DATA_DIR}features/{os.path.basename(File)[:-4]}.csv", "w") as data_table:
@@ -191,6 +192,14 @@ def _extract_all_features_from(File, header="choose"):
                 for line in feature_buffer:
                     data_table.write(line)
             feature_buffer = []
+
+    if len(feature_buffer) >= 500:
+        with open(f"{config.DATA_DIR}features/{os.path.basename(File)[:-4]}.csv", "a") as data_table:
+            for line in feature_buffer:
+                data_table.write(line)
+
+    print(f"{os.path.basename(__file__):} feature extraction completed for {os.path.basename(File)}")
+
 
 #data_from(f"{config.DATA_DIR}acc/tag9483_acc.txt")
 #extract_all_features()
