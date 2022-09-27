@@ -90,6 +90,33 @@ for event in EVENTS:
 for metalabel in METALABELS:
     assert metalabel in ETHOGRAM, f"{metalabel} not in ETHOGRAM"
 
+### Combining states
+REDUCED_STATE = {
+    'tree climb up': 'climb',
+    'tree climb down': 'climb',
+    'forage': 'forage',
+    'lick': 'forage',
+    'chewdown': 'forage',
+    'chew stand':'forage',
+    'chew headup':'forage',
+    'sniff': 'forage',
+    'drink': 'forage',
+    'stand still': 'still',
+    'sit still': 'still',
+    'standup': 'still',
+    'lie': 'still',
+    'urinate': 'still',
+    'backleg scratch':'scratch',
+    'scratch stomach':'scratch',
+    'neck scratch':'scratch',
+    'groom': 'groom',
+    'self groom': 'groom',
+    'walk': 'walk',
+    'run': 'run',
+    'lope': 'lope',
+    'agg to': 'aggression'
+}
+
 ### Feature extraction and audit reading
 EPOCH = 1.0 #seconds
 EPOCH_OVERHANG_TOLERANCE = 0.2
@@ -100,7 +127,9 @@ IGNORE_EVENTS_IN_AUDITS = True
 MULTIPLE_STARTS_ALLOWED = True
 MULTIPLE_STARTS_WARNING = False
 
-### LOCAL TIME AND OTHER VARIABLES
+### LOCAL TIME, SYNCING, AND OTHER VARIABLES
 TIMEZONE_OFFSET = -5 #hours
+SYNC_ACC_FOR_EOBS_DRIFT = True
+ACC_GPS_OFFSET = 18 #seconds (positive indicates e-Obs time is ahead of real GPS time)
 
 # TODO: add ML related terms

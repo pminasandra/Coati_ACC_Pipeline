@@ -53,6 +53,8 @@ def data_from(filename):
         None so far
     """
     acc_df = accreading.read_acc_file(filename)
+    if config.SYNC_ACC_FOR_EOBS_DRIFT:
+        acc_df['datetime'] = acc_df['datetime'] - dt.timedelta(config.ACC_GPS_OFFSET)
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
     cols = [f.__name__ for f in FEATURES_TO_USE]
