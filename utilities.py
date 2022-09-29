@@ -11,7 +11,9 @@ import config
 # IMAGE SAVING
 formats = ['pdf', 'png', 'svg']
 def saveimg(img_obj, name, formats=formats):
-    os.makedirs([f"{config.FIGURES_DIR}{form}" for form in formats], exist_ok=True)
+    Dirs = [f"{config.FIGURES_DIR}{form}" for form in formats]
+    for Dir in Dirs:
+        os.makedirs(Dir, exist_ok=True)
     for form in formats:
         img_obj.savefig(f"{config.FIGURES_DIR}{form}/{name}.{form}")
 
