@@ -53,8 +53,6 @@ def data_from(filename):
         None so far
     """
     acc_df = accreading.read_acc_file(filename)
-    if config.SYNC_ACC_FOR_EOBS_DRIFT:
-        acc_df['datetime'] = acc_df['datetime'] - dt.timedelta(config.ACC_GPS_OFFSET)
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
     cols = [f.__name__ for f in FEATURES_TO_USE]
@@ -195,7 +193,7 @@ def _extract_all_features_from(File, header="choose"):
                     data_table.write(line)
             feature_buffer = []
 
-    if len(feature_buffer) >= 500:
+    if len(feature_buffer) > 0:
         with open(f"{config.DATA_DIR}features/{os.path.basename(File)[:-4]}.csv", "a") as data_table:
             for line in feature_buffer:
                 data_table.write(line)

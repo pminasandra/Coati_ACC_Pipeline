@@ -36,6 +36,8 @@ def read_acc_file(filename):
     df = df[['acc_type', 'datetime', 'x', 'y', 'z']]
     df['datetime'] = pd.to_datetime(df['datetime'], format='%d.%m.%Y %a %H:%M:%S.%f')
 
+    if config.SYNC_ACC_FOR_EOBS_DRIFT:
+        df['datetime'] = df['datetime'] - dt.timedelta(seconds=config.ACC_GPS_OFFSET)
     return df
 
 
