@@ -143,6 +143,13 @@ def z_fft_vals(x_fft, y_fft, z_fft):
     del y_fft
     return ",".join([str(val) for val in np.abs(z_fft)])
 
+@feature
+def coef_of_vars(x,y,z):
+    x_cov = (x.var()**0.5)/x.mean()
+    y_cov = (y.var()**0.5)/y.mean()
+    z_cov = (z.var()**0.5)/z.mean()
+    return ",".join((str(x_cov), str(y_cov), str(z_cov)))
+
 def _extract_all_features_from(File, header="choose"):
     """
     Extracts all features avaiilable from an e-Obs generated tsv files, writes to usable csv fil
@@ -206,13 +213,14 @@ def _extract_all_features_from(File, header="choose"):
 def extract_all_features(list_of_files="auto", header="auto"):
     if list_of_files == "auto":
         list_of_files = glob.glob(f"{config.DATA_DIR}acc/tag*.txt")
-    pool = mp.Pool(20)
+    pool = mp.Pool(config.NUM_CORES)
     pool.starmap(_extract_all_features_from, [(f, header) for f in list_of_files])
     pool.join()
     pool.close()
     
 if __name__ == "__main__":
-    h = "datetime"
+    h = "datetime,"
+    h += "x_cov,y_cov,z_cov"
     for i in range(1,11):
         h += f",x{i}"
     for i in range(1,11):

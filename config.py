@@ -6,12 +6,19 @@ import os.path
 
 import pandas as pd
 
+### Set up where the code is being run
+SERVER = True
+
 ### SOME CONSTANTS
 ACC_FREQ = 20
 
 ### Setting up directories
-#PROJECTROOT = "/media/pranav/Data1/Personal/Projects/Coati_ACC_Pipeline_2022/"
-PROJECTROOT = "/home/jupyter-pminasandra/Coati_Project/Coati_ACC_Pipeline_2022/"
+if SERVER:
+    PROJECTROOT = "/home/jupyter-pminasandra/Coati_Project/Coati_ACC_Pipeline_2022/"
+    NUM_CORES = 20
+else:
+    PROJECTROOT = "/media/pranav/Data1/Personal/Projects/Coati_ACC_Pipeline_2022/"
+    NUM_CORES = 4
 FIGURES_DIR = os.path.join(PROJECTROOT, "Figures/")
 DATA_DIR = os.path.join(PROJECTROOT, "Data/")
 
