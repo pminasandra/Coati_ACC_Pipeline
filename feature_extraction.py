@@ -206,7 +206,7 @@ def _extract_all_features_from(File, header="choose"):
 def extract_all_features(list_of_files="auto", header="auto"):
     if list_of_files == "auto":
         list_of_files = glob.glob(f"{config.DATA_DIR}acc/tag*.txt")
-    pool = mp.Pool(4)
+    pool = mp.Pool(20)
     pool.starmap(_extract_all_features_from, [(f, header) for f in list_of_files])
     pool.join()
     pool.close()
@@ -219,4 +219,4 @@ if __name__ == "__main__":
         h += f",y{i}"
     for i in range(1,11):
         h += f",z{i}"
-    extract_all_features(list_of_files=[f"{config.DATA_DIR}acc/tag9478_acc.txt"], header=h)
+    extract_all_features(list_of_files="auto", header=h)

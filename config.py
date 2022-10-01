@@ -10,7 +10,8 @@ import pandas as pd
 ACC_FREQ = 20
 
 ### Setting up directories
-PROJECTROOT = "/media/pranav/Data1/Personal/Projects/Coati_ACC_Pipeline_2022/"
+#PROJECTROOT = "/media/pranav/Data1/Personal/Projects/Coati_ACC_Pipeline_2022/"
+PROJECTROOT = "/home/jupyter-pminasandra/Coati_Project/Coati_ACC_Pipeline_2022/"
 FIGURES_DIR = os.path.join(PROJECTROOT, "Figures/")
 DATA_DIR = os.path.join(PROJECTROOT, "Data/")
 
