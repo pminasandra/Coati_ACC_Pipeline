@@ -7,7 +7,7 @@ import os.path
 import pandas as pd
 
 ### Set up where the code is being run
-SERVER = True
+SERVER = False
 
 ### SOME CONSTANTS
 ACC_FREQ = 20
@@ -138,6 +138,6 @@ MULTIPLE_STARTS_WARNING = False
 ### LOCAL TIME, SYNCING, AND OTHER VARIABLES
 TIMEZONE_OFFSET = -5 #hours
 SYNC_ACC_FOR_EOBS_DRIFT = True
-ACC_GPS_OFFSET = 18 #seconds (positive indicates e-Obs time is ahead of real GPS time)
+ACC_GPS_OFFSET = 18 #seconds (positive indicates GPS time is ahead of e-Obs time)
 
 # TODO: add ML related terms
