@@ -33,7 +33,7 @@ combined_states = [config.REDUCED_STATE[state] for state in states]
 df['state'] = pd.Series(combined_states)
 
 # Sort data into training and test dataframes
-df_train, df_test = sklearn.model_selection.train_test_split(df, test_size=0.15)
+df_train, df_test = sklearn.model_selection.train_test_split(df, test_size=0.05)
 df_train.sort_values(by='datetime', ignore_index = True)
 df_test.sort_values(by='datetime', ignore_index = True)
 
@@ -45,12 +45,12 @@ ListOfClassifiers = [NearestNeighborClassifier, SVMClassifier, RandomForestClass
 
 # Train all classifiers
 for Classifier in ListOfClassifiers:
-    Classifier.fit(df_train[df_train.columns[1:31]], df_train['state'])
+    Classifier.fit(df_train[df_train.columns[1:len(df_train.columns)-1]], df_train['state'])
 
 # Test all classifiers
-NearestNeighborClassifier_pred = NearestNeighborClassifier.predict(df_test[df_test.columns[1:31]])
-SVMClassifier_pred = SVMClassifier.predict(df_test[df_test.columns[1:31]])
-RandomForestClassifier_pred = RandomForestClassifier.predict(df_test[df_test.columns[1:31]])
+NearestNeighborClassifier_pred = NearestNeighborClassifier.predict(df_test[df_test.columns[1:len(df_train.columns)-1]])
+SVMClassifier_pred = SVMClassifier.predict(df_test[df_test.columns[1:len(df_train.columns)-1]])
+RandomForestClassifier_pred = RandomForestClassifier.predict(df_test[df_test.columns[1:len(df_train.columns)-1]])
 
 NearestNeighborClassifier_a = sklearn.metrics.accuracy_score(df_test['state'], NearestNeighborClassifier_pred, normalize=True)
 SVMClassifier_a = sklearn.metrics.accuracy_score(df_test['state'], SVMClassifier_pred, normalize=True)
