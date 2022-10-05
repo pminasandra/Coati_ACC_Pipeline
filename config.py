@@ -139,5 +139,3 @@ MULTIPLE_STARTS_WARNING = False
 TIMEZONE_OFFSET = -5 #hours
 SYNC_ACC_FOR_EOBS_DRIFT = True
 ACC_GPS_OFFSET = 18 #seconds (positive indicates GPS time is ahead of e-Obs time)
-
-# TODO: add ML related terms
