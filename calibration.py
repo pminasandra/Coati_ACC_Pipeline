@@ -29,15 +29,13 @@ def calibrate_spherical(acc_df, init_guess="auto"):
     acc_df['y'] = acc_df['y'] - 2048
     acc_df['z'] = acc_df['z'] - 2048
 
-    acc_df[]
-
     if init_guess == "auto":
         init_guess = np.array([acc_df['x'].median(),
                                 acc_df['y'].median(),
                                 acc_df['z'].median(),
                                 1000.0
                                 ])
-    def optim_func(array_of_guesses):
+    def optim_func_compute_r(array_of_guesses):
 
         x = array_of_guesses[0]
         y = array_of_guesses[1]
@@ -49,20 +47,43 @@ def calibrate_spherical(acc_df, init_guess="auto"):
         z2 = (acc_df['z'] - z)**2
 
         r_err = (x2+y2+z2)
-        r_err = r_err[r_err > 300 ]
 
         return (r_err - r**2).sum()
 
-    optimization = scipy.optimize.least_squares(optim_func, init_guess)
+    optimization = scipy.optimize.least_squares(optim_func_compute_r, init_guess)
+    r = optimization['x'][2]
 
-    return optimization['x']
+    def optim_func_without_r(array_of_guesses):
+
+        x = array_of_guesses[0]
+        y = array_of_guesses[1]
+        z = array_of_guesses[2]
+
+        x2 = (acc_df['x'] - x)**2
+        y2 = (acc_df['y'] - y)**2
+        z2 = (acc_df['z'] - z)**2
+
+        r_err = (x2+y2+z2)
+
+        return (r_err - r**2).sum()
+
+    if init_guess == "auto":
+        init_guess = np.array([acc_df['x'].median(),
+                                acc_df['y'].median(),
+                                acc_df['z'].median()
+                                ])
+    else:
+        init_guess = init_guess[:-1]
+
+    optimization = scipy.optimize.least_squares(optim_func_without_r, init_guess)
+    return optimization['x'], r
 
 
 if __name__=="__main__":
     df = accreading.read_acc_file(f"{config.DATA_DIR}acc/tag9478_acc.txt")
     df = df[df['acc_type'] == "ACCN"]
 #    df = df[df['datetime'] > dt.datetime(2022, 4, 24, 17, 50, 0)]
-    [x0,y0,z0,r] = calibrate_spherical(df)
+    [x0,y0,z0], r = calibrate_spherical(df)
     
     fig = plt.figure()
     ax = fig.add_subplot(projection = '3d')
