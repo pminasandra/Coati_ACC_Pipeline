@@ -19,7 +19,7 @@ import config
 import feature_extraction
 import utilities
 
-def scatterplots_of_acc_axes():
+def scatterplots_of_acc_axes(use_only_high_sampling = True):
     """
     Chooses 5 random acc files from config.DATA_DIR/acc/, and plots 3D scatterplots of their 'x', 'y', and 'z' values.
     """
@@ -33,11 +33,28 @@ def scatterplots_of_acc_axes():
     for File in list_of_files:
         print(f"Working on file {count+1} of 5: {os.path.basename(File)}")
         df = accreading.read_acc_file(File)
+        if use_only_high_sampling:
+            df = df[df['acc_type'] == "ACCN"]
         axs[count].scatter(df['x'][::100], df['y'][::100], df['z'][::100], s=0.05)
         axs[count].set_title(f"{os.path.basename(File)[:-4]}")
         count += 1
 
     utilities.saveimg(fig, "acc_3d_scatterplot")
+
+    count = 0
+    if use_only_high_sampling:
+        plt.close(fig)
+        fig = plt.figure(figsize=(25, 5), layout='tight')
+        axs = fig.subplots(1, 5, subplot_kw={'projection':'3d'})
+        for File in list_of_files:
+            print(f"Working on file {count+1} of 5: {os.path.basename(File)}")
+            df = accreading.read_acc_file(File)
+            if use_only_high_sampling:
+                df = df[df['acc_type'] == "ACC"]
+            axs[count].scatter(df['x'][::100], df['y'][::100], df['z'][::100], s=0.05)
+            axs[count].set_title(f"{os.path.basename(File)[:-4]}")
+            count += 1
+    utilities.saveimg(fig, "lowres_acc_3d_scatterplot")
 
 def fourier_plots():
     """
@@ -82,5 +99,5 @@ def fourier_plots():
 
     utilities.saveimg(fig, "fft_avg")
 
-#scatterplots_of_acc_axes()
-fourier_plots()
+scatterplots_of_acc_axes()
+#fourier_plots()
