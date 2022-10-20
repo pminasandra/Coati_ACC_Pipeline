@@ -27,6 +27,10 @@ SERVER_PROJECTROOT = "/media/pranav/MPI_Dirs/EAS_shared/ccas/working/Coati_ACC_P
 ACCELEROMETER_DATA = os.path.join(SERVER_PROJECTROOT, "working/Coati_ACC_Pipeline/Data/Accelerometer/")
 AUDIT_DATA = os.path.join(SERVER_PROJECTROOT, "working/Coati_ACC_Pipeline/Data/Audits/")
 
+# CALIBRATION
+DELETE_G_FROM_SPHERICAL_THETA = True
+TWO_ROUND_FIT = False
+
 ### Setup, generate lists of behaviours
 
 _unknown_behaviour_labels = ["NA", "UNKNOWN"]
