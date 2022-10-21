@@ -55,8 +55,7 @@ def data_from(filename):
     """
     acc_df = accreading.read_acc_file(filename)
     assert calibration.calibration_file_exists(filename)
-    acc_df = calibration.calibrate_all_files(acc_df, calibration.calibration_file(filename))
-    acc_df = calibration.calibrate_all_files(acc_df, calibration_file(filename))
+    acc_df = calibration.calibrate_data(acc_df, calibration.calibration_file(filename))
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
     cols = [f.__name__ for f in FEATURES_TO_USE]
