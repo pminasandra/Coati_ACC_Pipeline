@@ -33,7 +33,7 @@ combined_states = [config.REDUCED_STATE[state] for state in states]
 df['state'] = pd.Series(combined_states)
 
 # Sort data into training and test dataframes
-df_train, df_test = sklearn.model_selection.train_test_split(df, test_size=0.05)
+df_train, df_test = sklearn.model_selection.train_test_split(df, test_size=0.2)
 df_train.sort_values(by='datetime', ignore_index = True)
 df_test.sort_values(by='datetime', ignore_index = True)
 
