@@ -166,7 +166,7 @@ def y_min(x,y,z):
 
 @feature
 def y_max(x,y,z):
-    del y,z
+    del x,z
     return y.max()
 
 @feature
@@ -199,12 +199,12 @@ def vedba(x,y,z):
     return res.sum()
 ##
 
-def _extract_all_features_from(File, header="choose"):
+def _extract_all_features_from(File, header="auto"):
     """
     Extracts all features avaiilable from an e-Obs generated tsv files, writes to usable csv fil
     Args:
         File (str): file from which to extract features
-        header (str): string to write in header of generated csv file. If value is "choose", automatically computes header.
+        header (str): string to write in header of generated csv file. If value is "auto", automatically computes header.
     Returns:
         None
     Raises:
@@ -219,7 +219,7 @@ def _extract_all_features_from(File, header="choose"):
         cols = [f.__name__ for f in FEATURES_TO_USE]
         cols += [f.__name__ for f in FOURIER_FEATURES_TO_USE]
         cols = ['datetime'] + cols
-        if header=="choose":
+        if header=="auto":
             data_table.write(",".join(cols) + "\n")
         else:
             data_table.write(header + "\n")
