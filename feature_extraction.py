@@ -60,9 +60,9 @@ def data_from(filename):
     acc_df = calibration.calibrate_data(acc_df, calibration.calibration_file(filename))
     acc_df = acc_df.reset_index(drop=True)
 
-    acc_df = acc_df.reindex()[['']]
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
+    print(datetime_min, datetime_max)
     cols = [f.__name__ for f in FEATURES_TO_USE]
     cols += [f.__name__ for f in FOURIER_FEATURES_TO_USE]
 
@@ -79,7 +79,7 @@ def data_from(filename):
             if time_diff > 0:
                 if time_diff/config.EPOCH > config.EPOCH_OVERHANG_TOLERANCE:
                     curr_row += int((config.EPOCH - time_diff)*rows_in_epoch)
-                    curr_time += dt.timedelta(int((config.EPOCH - time_diff)*rows_in_epoch))
+                    curr_time += dt.timedelta(seconds=int((config.EPOCH - time_diff)*rows_in_epoch))
                 else:
                     next_second_start = curr_row+int((config.EPOCH - time_diff)*rows_in_epoch)
                     yield curr_time, acc_df[['x', 'y', 'z']][curr_row:next_second_start].to_numpy()
@@ -273,4 +273,4 @@ def extract_all_features(list_of_files="auto", header="auto"):
     pool.close()
     
 if __name__ == "__main__":
-    extract_all_features(list_of_files="auto", header="auto")
+    extract_all_features(list_of_files=[f"{config.DATA_DIR}acc/tag9478_acc.txt"], header="auto")
