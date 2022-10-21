@@ -62,7 +62,6 @@ def data_from(filename):
 
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
-    print(datetime_min, datetime_max)
     cols = [f.__name__ for f in FEATURES_TO_USE]
     cols += [f.__name__ for f in FOURIER_FEATURES_TO_USE]
 
@@ -201,7 +200,7 @@ def vedba(x,y,z):
     zr = z - z.mean()
 
     res = (xr**2 + yr**2 + zr**2)**0.5
-    return res.sum()
+    return res.mean()
 ##
 
 def _extract_all_features_from(File, header="auto"):
@@ -235,14 +234,15 @@ def _extract_all_features_from(File, header="auto"):
         y = data[:,1]
         z = data[:,2]
 
-        x_fft = np.fft.fft(x)[1:11]
-        y_fft = np.fft.fft(y)[1:11]
-        z_fft = np.fft.fft(z)[1:11]
-
-        normal_features = [f(x,y,z) for f in FEATURES_TO_USE]
+        if len(FOURIER_FEATURES_TO_USE) > 0:
+            x_fft = np.fft.fft(x)[1:11]
+            y_fft = np.fft.fft(y)[1:11]
+            z_fft = np.fft.fft(z)[1:11]
         fourier_features = [f(x_fft,y_fft,z_fft) for f in FOURIER_FEATURES_TO_USE]
 
-        if len(normal_features) > 0:
+        normal_features = [f(x,y,z) for f in FEATURES_TO_USE]
+
+        if len(FOURIER_FEATURES_TO_USE) > 0:
             seperator = ","
         else:
             seperator = ""
