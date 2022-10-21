@@ -55,7 +55,7 @@ def data_from(filename):
     """
     acc_df = accreading.read_acc_file(filename)
     if config.USE_ONLY_ACCN:
-        acc_df = acc_df[acc_df['acc_type'=="ACCN"]]
+        acc_df = acc_df[acc_df['acc_type']=="ACCN"]
     assert calibration.calibration_file_exists(filename)
     acc_df = calibration.calibrate_data(acc_df, calibration.calibration_file(filename))
     datetime_min = acc_df['datetime'].min()
