@@ -162,3 +162,6 @@ def calibration_file(acc_file):
 def calibration_file_exists(acc_file):
     return os.path.exists(calibration_file(acc_file))
 
+if __name__ == "__main__":
+    calibrate_all_files()
+

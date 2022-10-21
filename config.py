@@ -7,7 +7,7 @@ import os.path
 import pandas as pd
 
 ### Set up where the code is being run
-SERVER = False
+SERVER = True
 
 ### SOME CONSTANTS
 ACC_FREQ = 20

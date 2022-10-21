@@ -13,6 +13,7 @@ import pandas as pd
 
 import accreading
 import config
+import calibration
 
 FEATURES_TO_USE = []
 FOURIER_FEATURES_TO_USE = []
@@ -53,6 +54,8 @@ def data_from(filename):
         None so far
     """
     acc_df = accreading.read_acc_file(filename)
+    assert calibration.calibration_file_exists(filename)
+    acc_df = calibration.calibrate_all_files(acc_df, calibration_file(filename))
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
     cols = [f.__name__ for f in FEATURES_TO_USE]
@@ -123,32 +126,76 @@ def data_from(filename):
             else:
                 curr_time += dt.timedelta(seconds = config.EPOCH + time_diff)
                 curr_row += int((config.EPOCH + time_diff)*rows_in_epoch)
-        
 
-@fourier_feature
-def x_fft_vals(x_fft, y_fft, z_fft):
-    del y_fft
-    del z_fft
-    return ",".join([str(val) for val in np.abs(x_fft)])
-
-@fourier_feature
-def y_fft_vals(x_fft, y_fft, z_fft):
-    del x_fft
-    del z_fft
-    return ",".join([str(val) for val in np.abs(y_fft)])
-
-@fourier_feature
-def z_fft_vals(x_fft, y_fft, z_fft):
-    del x_fft
-    del y_fft
-    return ",".join([str(val) for val in np.abs(z_fft)])
+## Features to be extracted
 
 @feature
-def coef_of_vars(x,y,z):
-    x_cov = (x.var()**0.5)/x.mean()
-    y_cov = (y.var()**0.5)/y.mean()
-    z_cov = (z.var()**0.5)/z.mean()
-    return ",".join((str(x_cov), str(y_cov), str(z_cov)))
+def x_mean(x,y,z):
+    del y,z
+    return x.mean()
+
+@feature
+def x_var(x,y,z):
+    del y,z
+    return x.var()
+
+@feature
+def x_min(x,y,z):
+    del y,z
+    return x.min()
+
+@feature
+def x_max(x,y,z):
+    del y,z
+    return x.max()
+
+@feature
+def y_mean(x,y,z):
+    del x,z
+    return y.mean()
+
+@feature
+def y_var(x,y,z):
+    del x,z
+    return y.var()
+
+@feature
+def y_min(x,y,z):
+    del x,z
+    return y.min()
+
+@feature
+def y_max(x,y,z):
+    del y,z
+    return y.max()
+
+@feature
+def z_mean(x,y,z):
+    del x,y
+    return z.mean()
+
+@feature
+def z_var(x,y,z):
+    del x,y
+    return z.var()
+
+@feature
+def z_min(x,y,z):
+    del x,y
+    return z.min()
+
+@feature
+def z_max(x,y,z):
+    del x,y
+    return z.max()
+
+@feature
+def vedba(x,y,z):
+    xr = x - x.mean()
+    yr = y - y.mean()
+    zr = z - z.mean()
+
+##
 
 def _extract_all_features_from(File, header="choose"):
     """
@@ -219,12 +266,4 @@ def extract_all_features(list_of_files="auto", header="auto"):
     pool.close()
     
 if __name__ == "__main__":
-    h = "datetime,"
-    h += "x_cov,y_cov,z_cov"
-    for i in range(1,11):
-        h += f",x{i}"
-    for i in range(1,11):
-        h += f",y{i}"
-    for i in range(1,11):
-        h += f",z{i}"
-    extract_all_features(list_of_files="auto", header=h)
+    extract_all_features(list_of_files="auto", header="auto")
