@@ -7,7 +7,7 @@ import os.path
 import pandas as pd
 
 ### Set up where the code is being run
-SERVER = True
+SERVER = False
 
 ### SOME CONSTANTS
 ACC_FREQ = 20
@@ -26,6 +26,10 @@ DATA_DIR = os.path.join(PROJECTROOT, "Data/")
 SERVER_PROJECTROOT = "/media/pranav/MPI_Dirs/EAS_shared/ccas/working/Coati_ACC_Pipeline"
 ACCELEROMETER_DATA = os.path.join(SERVER_PROJECTROOT, "working/Coati_ACC_Pipeline/Data/Accelerometer/")
 AUDIT_DATA = os.path.join(SERVER_PROJECTROOT, "working/Coati_ACC_Pipeline/Data/Audits/")
+
+# CALIBRATION
+DELETE_G_FROM_SPHERICAL_THETA = True
+TWO_ROUND_FIT = False
 
 ### Setup, generate lists of behaviours
 
@@ -138,6 +142,4 @@ MULTIPLE_STARTS_WARNING = False
 ### LOCAL TIME, SYNCING, AND OTHER VARIABLES
 TIMEZONE_OFFSET = -5 #hours
 SYNC_ACC_FOR_EOBS_DRIFT = True
-ACC_GPS_OFFSET = 18 #seconds (positive indicates e-Obs time is ahead of real GPS time)
-
-# TODO: add ML related terms
+ACC_GPS_OFFSET = 18 #seconds (positive indicates GPS time is ahead of e-Obs time)

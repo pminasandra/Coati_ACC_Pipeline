@@ -31,7 +31,7 @@ for df_audit in all_audits:
 
     df_audits = df_audit.groupby('state')
     for state, vals in df_audits: 
-        axs[0].scatter(x=vals['datetime'], y=[3000]*len(vals['datetime']), label=state)
+        axs[0].scatter(x=vals['datetime'], y=[3000]*len(vals['datetime']), label=state, s=0.9)
 
     axs[0].legend()
     utilities.saveimg(fig, f"audit{audit_count}")
