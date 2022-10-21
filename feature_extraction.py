@@ -58,6 +58,9 @@ def data_from(filename):
         acc_df = acc_df[acc_df['acc_type']=="ACCN"]
     assert calibration.calibration_file_exists(filename)
     acc_df = calibration.calibrate_data(acc_df, calibration.calibration_file(filename))
+    acc_df = acc_df.reset_index(drop=True)
+
+    acc_df = acc_df.reindex()[['']]
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
     cols = [f.__name__ for f in FEATURES_TO_USE]
