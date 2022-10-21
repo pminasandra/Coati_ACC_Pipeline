@@ -273,4 +273,4 @@ def extract_all_features(list_of_files="auto", header="auto"):
     pool.close()
     
 if __name__ == "__main__":
-    extract_all_features(list_of_files=[f"{config.DATA_DIR}acc/tag9478_acc.txt"], header="auto")
+    extract_all_features(list_of_files="auto", header="auto")

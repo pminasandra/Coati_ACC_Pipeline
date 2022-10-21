@@ -143,4 +143,4 @@ MULTIPLE_STARTS_WARNING = False
 ### LOCAL TIME, SYNCING, AND OTHER VARIABLES
 TIMEZONE_OFFSET = -5 #hours
 SYNC_ACC_FOR_EOBS_DRIFT = True
-ACC_GPS_OFFSET = 18 #seconds (positive indicates GPS time is ahead of e-Obs time)
+ACC_GPS_OFFSET = 17 #seconds (positive indicates GPS time is ahead of e-Obs time)

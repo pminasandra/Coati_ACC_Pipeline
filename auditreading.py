@@ -130,7 +130,10 @@ def read_audit(auditfile):
         proc_time += dt.timedelta(seconds = config.EPOCH)
         bout_count += bout_count_correction + 1
 
-    return pd.DataFrame(times_and_labels, columns=("datetime", "state"))
+    df = pd.DataFrame(times_and_labels, columns=("datetime", "state"))
+    if config.SYNC_ACC_FOR_EOBS_DRIFT:
+        df['datetime'] = df['datetime'] + dt.timedelta(seconds=config.ACC_GPS_OFFSET)
+    return df
 
 def read_all_audits():
 
