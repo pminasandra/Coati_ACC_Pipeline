@@ -30,6 +30,7 @@ AUDIT_DATA = os.path.join(SERVER_PROJECTROOT, "working/Coati_ACC_Pipeline/Data/A
 # CALIBRATION
 DELETE_G_FROM_SPHERICAL_THETA = True
 TWO_ROUND_FIT = False
+USE_ONLY_ACCN = True
 
 ### Setup, generate lists of behaviours
 
