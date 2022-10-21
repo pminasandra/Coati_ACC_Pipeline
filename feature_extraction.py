@@ -55,7 +55,11 @@ def data_from(filename):
     """
     acc_df = accreading.read_acc_file(filename)
     assert calibration.calibration_file_exists(filename)
+<<<<<<< HEAD
     acc_df = calibration.calibrate_all_files(acc_df, calibration.calibration_file(filename))
+=======
+    acc_df = calibration.calibrate_all_files(acc_df, calibration_file(filename))
+>>>>>>> 8ee4bfe0f69f17e3ec175692b251d7a651d159ec
     datetime_min = acc_df['datetime'].min()
     datetime_max = acc_df['datetime'].max()
     cols = [f.__name__ for f in FEATURES_TO_USE]
@@ -197,7 +201,6 @@ def vedba(x,y,z):
 
     res = (xr**2 + yr**2 + zr**2)**0.5
     return res.sum()
-
 ##
 
 def _extract_all_features_from(File, header="choose"):
