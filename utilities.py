@@ -32,7 +32,7 @@ def acc_visualise(acc_reads, start_time, stop_time):
 
     acc_relevant = acc_reads[(acc_reads['datetime'] > start_time) & (acc_reads['datetime'] < stop_time)]
 
-    fig, axs = plt.subplots(3,1, sharex=True, sharey=False)
+    fig, axs = plt.subplots(3,1, sharex=True, sharey=True)
     axs[0].plot(acc_relevant['datetime'], acc_relevant['x'], linewidth=0.5)
     axs[1].plot(acc_relevant['datetime'], acc_relevant['y'], linewidth=0.5)
     axs[2].plot(acc_relevant['datetime'], acc_relevant['z'], linewidth=0.5)
