@@ -27,6 +27,7 @@ def acc_visualise(acc_reads, start_time, stop_time):
         stop_time (datetime.datetime)
     """
 
+    assert stop_time > start_time
     assert acc_reads['datetime'].min() <= start_time
     assert acc_reads['datetime'].max() >= stop_time
 
@@ -44,3 +45,28 @@ def acc_visualise(acc_reads, start_time, stop_time):
     axs[2].set_xlabel('Time')
 
     return fig, axs
+
+
+def feature_visualise(feature_df, start_time, stop_time, feature="x_mean"):
+    """
+    Plots values of a chosen feature between start_time and stop_time
+    Args:
+        feature_df (pd.DataFrame): pd.DataFrame object containing extracted features
+        start_time (datetime.datetime)
+        stop_time (datetime.datetime)
+        feature (str): which feature to use
+    """
+    assert stop_time > start_time
+    assert feature_df['datetime'].min() <= start_time
+    assert feature_df['datetime'].max() >= stop_time
+    assert feature in feature_df.columns
+
+    feature_df = feature_def[(feature_df['datetime'] > start_time) & (feature_df['datetime'] < stop_time)]
+
+    fig, ax = plt.subplots()
+    ax.plot(feature_df['datetime'], feature_df['feature'], linetype='b')
+
+    ax.set_xlabel("Time")
+    ax.set_ylabel(feature)
+
+    return fig, ax

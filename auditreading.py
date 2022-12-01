@@ -139,10 +139,10 @@ def read_all_audits():
 
     tsvfiles = glob.glob(f"{config.DATA_DIR}audits/*.tsv")
 
-    list_of_audits = []
+    dict_of_audits = {}
     for tsvf in tsvfiles:
-        list_of_audits.append(read_audit(tsvf))
+        dict_of_audits[tsvf] = read_audit(tsvf)
 
-    return list_of_audits
+    return dict_of_audits
 if __name__ == "__main__":
     pass
