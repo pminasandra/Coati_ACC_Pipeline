@@ -22,6 +22,9 @@ else:
 FIGURES_DIR = os.path.join(PROJECTROOT, "Figures/")
 DATA_DIR = os.path.join(PROJECTROOT, "Data/")
 
+#TODO: Better handling of deployment
+FOC_DEPLOYMENT = "galaxy"
+
 #SERVER_PROJECTROOT = "/media/pranav/MPI_Dirs/EAS_shared/coati/working/Coati_ACC_Pipeline/"
 SERVER_PROJECTROOT = "/media/pranav/MPI_Dirs/EAS_shared/ccas/working/Coati_ACC_Pipeline"
 ACCELEROMETER_DATA = os.path.join(SERVER_PROJECTROOT, "working/Coati_ACC_Pipeline/Data/Accelerometer/")

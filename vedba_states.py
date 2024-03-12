@@ -12,7 +12,7 @@ from sklearn.mixture import GaussianMixture as GMM
 import config
 import utilities
 
-for f in glob.glob(join(config.DATA_DIR, "features/*.csv")):
+for f in glob.glob(join(config.DATA_DIR, "trago/features/*.csv")):
     fname = os.path.basename(f)
     df = pd.read_csv(f, header=0)
     df_out = df.copy()

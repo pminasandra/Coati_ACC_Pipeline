@@ -137,7 +137,7 @@ def read_audit(auditfile):
 
 def read_all_audits():
 
-    tsvfiles = glob.glob(f"{config.DATA_DIR}audits/*.tsv")
+    tsvfiles = glob.glob(os.path.join(config.DATA_DIR, config.FOC_DEPLOYMENT, "audits/*.tsv"))
 
     dict_of_audits = {}
     for tsvf in tsvfiles:
